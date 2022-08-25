@@ -8,15 +8,25 @@ before_install:
 script:
   - docker run -e CI=true malks14/react-test npm test -- --coverage
 
+
 after_success:
   - docker build -t malks14/multi-client ./client
   - docker build -t malks14/multi-nginx ./nginx
   - docker build -t malks14/multi-server ./server
   - docker build -t malks14/multi-worker ./worker
-  #log in to the docker cli
+  #log in to the docker cli (docker hub)
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #take those images and push them to docker hub
   - docker push malks14/multi-client
   - docker push malks14/multi-nginx
   - docker push malks14/multi-server
   - docker push malks14/multi-worker
+
+deploy:
+  region: us-east-1
+  app: multi-docker
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-us-east-1-560570119953"
+  bucket_path: "docker-multi"
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"

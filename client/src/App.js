@@ -21,7 +21,7 @@ function App() {
           >
             Learn React
           </a>
-          <Link to='/'>Home</Link>
+          <Link to='/'>Hola bro</Link>
           <Link to='otherpage'>Other Page</Link>
         </header>
         <Route exact path="/" component={Fib} />
